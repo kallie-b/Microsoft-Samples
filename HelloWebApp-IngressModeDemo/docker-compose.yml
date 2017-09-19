@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+    web:
+      image: hello-count-web-plus
+      ports:
+        - 8000:8000
+      networks:
+        - backend
+      deploy:
+        replicas: 5
+        placement: 
+          constraints: [node.labels.os == windows]
+
+    db:
+      image: redis:alpine
+      networks:
+        - backend
+          aliases:
+            - db
+            - redis
+      deploy:
+          placement: 
+            constraints: [node.labels.os == linux]
+          endpoint_mode: dnsrr
+
+networks:
+    backend:
+  
